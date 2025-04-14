@@ -4,25 +4,27 @@ set -e
 date
 echo "Updating Python application on VM..."
 
-APP_DIR="/home/azureuser/SDA_CP"
-GIT_REPO="https://github.com/MaramAlfahmi/SDA_CP.git"
-BRANCH="main"
+HOME_DIR=$(eval echo ~$USER)
+APP_DIR="$HOME_DIR/SDA-Chatbot-Project"
+REPO_URL="https://github.com/Mohammed78vr/SDA-Chatbot-Project.git"
+BRANCH="stage-6test"
+GITHUB_TOKEN=$TOKEN  # Passed securely via protectedSettings
 
 # Update code
 if [ -d "$APP_DIR" ]; then
-    sudo -u azureuser bash -c "cd $APP_DIR && git pull origin $BRANCH"
+    sudo -u azureuser bash -c "cd $APP_DIR && git fetch origin && git reset --hard origin/$BRANCH"
 else
-    sudo -u azureuser git clone -b $BRANCH "https://$GITHUB_TOKEN@$GIT_REPO" "$APP_DIR"
-    sudo -u azureuser bash -c "cd $APP_DIR"
+    sudo -u azureuser git clone -b "$BRANCH" "https://${GITHUB_TOKEN}@${REPO_URL}" "$APP_DIR"
 fi
 
 # Install dependencies
-sudo -u azureuser /home/azureuser/miniconda3/envs/project/bin/pip install --upgrade pip
-sudo -u azureuser /home/azureuser/miniconda3/envs/project/bin/pip install -r "$APP_DIR/requirements.txt"
+sudo -u azureuser $HOME_DIR/miniconda3/envs/project/bin/pip install --upgrade pip
+sudo -u azureuser $HOME_DIR/miniconda3/envs/project/bin/pip install -r "${APP_DIR}/requirements.txt"
 
 # Restart the service
-sudo -u azureuser systemctl restart backend.service
-sudo -u azureuser systemctl restart frontend.service
-sudo -u azureuser systemctl restart chromadb.service 
+sudo systemctl restart backend
+sudo systemctl is-active --quiet backend || echo "Backend failed to start"
+sudo systemctl restart frontend
+sudo systemctl is-active --quiet frontend || echo "frontend failed to start"
 
 echo "Python application update completed!"
