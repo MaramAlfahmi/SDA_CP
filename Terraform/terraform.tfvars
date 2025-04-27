@@ -1,4 +1,4 @@
-subscription_id     = "" #use your subsctiption Id
+subscription_id     = "a1de2167-82ed-4dd3-8e39-783a627b63f9" #use your subsctiption Id
 resource_group_name = "Milestone2"
 location            = "eastus" #use your location
 #======================= varibales for Vnet modules =======================
