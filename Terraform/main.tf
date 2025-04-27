@@ -54,3 +54,19 @@ module "db" {
   postgres_backup_retention = var.postgres_backup_retention
   depends_on           = [azurerm_resource_group.RG]
 }
+
+#=========================  VMSS  ===========================================#
+
+module "vmss" {
+  source              = "./modules/vmss"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  vmss_name           = var.vmss_name
+  source_image_id     = var.source_image_id
+  subnet_id           = module.Vnet.web_app_subnet_id
+  backend_pool_id     = module.application_gateway.backend_pool_id
+  depends_on = [azurerm_resource_group.RG,
+  module.Vnet]
+}
+
+
