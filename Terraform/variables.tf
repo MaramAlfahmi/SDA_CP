@@ -79,3 +79,13 @@ variable "postgres_backup_retention" {
   type        = number
   default     = 7
 }
+
+#=======================  VMSS modules =======================
+variable "vmss_name" {
+  description = "Then name of the VM Scale Set"
+  type        = string
+}
+variable "source_image_id" {
+  description = "The image you want to use in the VMSS"
+  type        = string
+}
