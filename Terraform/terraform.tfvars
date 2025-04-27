@@ -21,3 +21,9 @@ db_passowrd          = "dbserverdata2"
 start_ip_address     = "0.0.0.0"
 end_ip_address       = "255.255.255.255"
 postgres_backup_retention = 7
+
+
+#======================= varibales for VMSS modules =======================
+vmss_name       = "AppVMSS"
+source_image_id = "<YOUR_IMAGE_ID>" # use your image for the VMSS
+
